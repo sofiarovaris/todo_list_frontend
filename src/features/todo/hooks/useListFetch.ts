@@ -4,8 +4,17 @@ import api from '../../../api/config';
 
 export default function useListFetch() {
   const fetcher = async () => {
-    const response = await api.get('/lists');
-    return response.data;
+    try {
+      const response = await api.get('/lists');
+
+      const sortedLists = response.data.sort(
+        (a: ListProps, b: ListProps) => a.id - b.id
+      );
+      return sortedLists;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      throw error;
+    }
   };
 
   const { data, error, mutate } = useSWR('/lists', fetcher);

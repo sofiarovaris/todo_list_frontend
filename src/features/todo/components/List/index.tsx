@@ -18,6 +18,7 @@ import DeleteConfirmationModal from '../DeleteConfirmationModal';
 import EditListModal from '../EditListModal';
 import { deleteList, updateList } from '../../../../api/lists';
 import useListFetch from '../../hooks/useListFetch';
+import { createListItem } from '../../../../api/list_item';
 
 interface ListComponentProps {
   list: ListProps;
@@ -34,9 +35,34 @@ export default function ListComponent({ list }: ListComponentProps) {
 
   const { mutate } = useListFetch();
 
-  function handleAddItem() {
+  async function handleAddItem() {
     if (newItemText.trim()) {
-      // onAddItem(newItemText);
+      const created = await createListItem(list.id, {
+        name: newItemText,
+      });
+
+      if (created) {
+        mutate();
+        setNewItemText('');
+        toast({
+          title: 'Item added.',
+          description: 'Your item has been added successfully.',
+          status: 'success',
+          duration: 2000,
+          position: 'top',
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: 'Error adding item.',
+          description: 'An error occurred while adding your item.',
+          status: 'error',
+          duration: 2000,
+          position: 'top',
+          isClosable: true,
+        });
+      }
+
       setNewItemText('');
     }
   }
@@ -92,7 +118,7 @@ export default function ListComponent({ list }: ListComponentProps) {
     }
   }
 
-  const completedCount = list.items.filter((item) => item.isDone).length;
+  const completedCount = list.items.filter((item) => item.is_done).length;
   const totalCount = list.items.length;
   const completionPercentage = totalCount
     ? (completedCount / totalCount) * 100
@@ -101,70 +127,100 @@ export default function ListComponent({ list }: ListComponentProps) {
   return (
     <Box
       border="1px"
-      borderColor="#CBD5E0"
+      borderColor="#E2E8F0"
       borderRadius="md"
       overflow="hidden"
-      p={4}
       mb={4}
       display="flex"
       flexDirection="column"
     >
-      <Flex justify="space-between" align="center" mb={2}>
-        <Text fontSize="lg" fontWeight="bold" color="#1A202C">
-          {list.name}
-        </Text>
-        <Flex>
-          <IconButton
-            icon={<FaEdit />}
-            aria-label="Edit list"
-            size="sm"
-            colorScheme="teal"
-            mr={2}
-            onClick={editModal.onOpen}
-          />
-          <IconButton
-            icon={<FaTrash />}
-            aria-label="Delete list"
-            size="sm"
-            colorScheme="red"
-            onClick={deleteModal.onOpen}
-          />
+      <Box backgroundColor={list.color} p={4} w="100%">
+        <Flex justify="space-between" align="center" mb={2} w="100%" h="100%">
+          <Text fontSize="lg" fontWeight="bold" color="#1A202C">
+            {list.name}
+          </Text>
+          <Flex>
+            <IconButton
+              icon={<FaEdit />}
+              aria-label="Edit list"
+              size="sm"
+              color="gray.600"
+              mr={2}
+              _hover={{ bg: 'gray.100' }}
+              onClick={editModal.onOpen}
+            />
+            <IconButton
+              icon={<FaTrash />}
+              aria-label="Delete list"
+              size="sm"
+              color="gray.600"
+              _hover={{ bg: 'gray.100' }}
+              onClick={deleteModal.onOpen}
+            />
+          </Flex>
         </Flex>
-      </Flex>
+      </Box>
       <Divider mb={2} />
-      <Box flex="1" maxH="200px" overflowY="auto" mb={2}>
-        {list.items.slice(0, 3).map((item, index) => (
-          <ListItem key={index} text={item.name} isChecked={item.isDone} />
-        ))}
-        {list.items.length > 3 && (
+      <Box
+        flex="1"
+        maxH="150px"
+        minH="150px"
+        mb={2}
+        px={4}
+        py={2}
+        position="relative"
+      >
+        {list.items.length === 0 && (
+          <Text
+            fontSize="sm"
+            color="#4A5568"
+            position="absolute"
+            top={2}
+            zIndex={1}
+          >
+            No items in this list
+          </Text>
+        )}
+        <Box h="100%" overflow="auto" pt={list.items.length === 0 ? 8 : 0}>
+          {list.items.slice(0, 3).map((item, index) => (
+            <ListItem key={index} {...item} preview />
+          ))}
+        </Box>
+        {list.items.length > 0 && (
           <Button
-            mt={2}
+            position="absolute"
+            bottom={4}
+            left={4}
             variant="link"
             colorScheme="teal"
             onClick={listModal.onOpen}
           >
-            See all items
+            Open list
           </Button>
         )}
       </Box>
-      <AddItem
-        value={newItemText}
-        onChange={(e) => setNewItemText(e.target.value)}
-        onAdd={handleAddItem}
-      />
-      <Flex justify="flex-end" align="center" mt={3} pt={2}>
-        <Text fontSize="sm" color="#4b5563">
-          Total: {totalCount} | Done: {completedCount} (
-          {completionPercentage.toFixed(2)}%)
-        </Text>
-      </Flex>
+      <Box px={4} py={2} borderTop="1px solid #E2E8F0">
+        <AddItem
+          value={newItemText}
+          onChange={(e) => setNewItemText(e.target.value)}
+          onAdd={handleAddItem}
+        />
+        <Flex justify="flex-end" align="center" mt={3} pt={2}>
+          <Text fontSize="sm" color="#4A5568">
+            Total: {totalCount} | Done: {completedCount} (
+            {completionPercentage.toFixed(2)}%)
+          </Text>
+        </Flex>
+      </Box>
 
       {/* Modal to show all items */}
       <ItemListModal
         isOpen={listModal.isOpen}
         onClose={listModal.onClose}
         title={list.name}
+        id={list.id}
         items={list.items}
+        color={list.color}
       />
 
       {/* Modal to confirm deletion */}

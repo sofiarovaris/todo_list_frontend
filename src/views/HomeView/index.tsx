@@ -6,7 +6,7 @@ import ListComponent from '../../features/todo/components/List';
 import useListFetch from '../../features/todo/hooks/useListFetch';
 
 export default function HomeView() {
-  const { lists } = useListFetch();
+  const { lists, mutate } = useListFetch();
 
   const numColumns = useBreakpointValue({ base: 1, md: 2, lg: 3, xl: 4 });
 

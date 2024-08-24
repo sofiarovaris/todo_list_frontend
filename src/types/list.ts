@@ -1,7 +1,7 @@
 export interface ListItemProps {
   id: number;
   name: string;
-  isDone: boolean;
+  is_done: boolean;
 }
 
 export interface ListProps {
@@ -14,4 +14,8 @@ export interface ListProps {
 export interface CreateEditListProps {
   name: string;
   color: string;
+}
+
+export interface CreateEditListItemProps {
+  name: string;
 }
