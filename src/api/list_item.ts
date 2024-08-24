@@ -39,7 +39,7 @@ export async function deleteListItem(id: number) {
 
 export async function markListItemAsDone(id: number) {
   try {
-    await api.post(`/list_items/${id}/done`);
+    await api.put(`/list_items/${id}/done`);
     return true;
   } catch (err) {
     console.error('Error marking list item as done:', err);
@@ -49,7 +49,7 @@ export async function markListItemAsDone(id: number) {
 
 export async function markListItemAsUndone(id: number) {
   try {
-    await api.post(`/list_items/${id}/undone`);
+    await api.put(`/list_items/${id}/undone`);
     return true;
   } catch (err) {
     console.error('Error marking list item as undone:', err);

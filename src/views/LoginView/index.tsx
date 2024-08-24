@@ -8,23 +8,28 @@ import {
   useToast,
   Icon,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { FaCheckCircle } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+
+interface LoginFormInputs {
+  email: string;
+  password: string;
+}
 
 export default function LoginView() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { login } = useAuth();
   const toast = useToast();
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormInputs>();
 
-  const handleLogin = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-
-    toast({
-      title: 'Login realizado com sucesso!',
-      status: 'success',
-      duration: 3000,
-      isClosable: true,
-    });
+  const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
+    await login(data);
   };
 
   return (
@@ -56,26 +61,34 @@ export default function LoginView() {
           Login
         </Text>
 
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={4}>
             <Input
               placeholder="E-mail"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              {...register('email', { required: 'Email is required' })}
               borderColor="#CBD5E0"
               _hover={{ borderColor: '#A0AEC0' }}
               _focus={{ borderColor: '#63B3ED' }}
             />
+            {errors.email && (
+              <Text color="red.500" fontSize="sm">
+                {errors.email.message}
+              </Text>
+            )}
             <Input
               placeholder="Password"
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              {...register('password', { required: 'Password is required' })}
               borderColor="#CBD5E0"
               _hover={{ borderColor: '#A0AEC0' }}
               _focus={{ borderColor: '#63B3ED' }}
             />
+            {errors.password && (
+              <Text color="red.500" fontSize="sm">
+                {errors.password.message}
+              </Text>
+            )}
           </Stack>
           <Button
             type="submit"
@@ -85,7 +98,7 @@ export default function LoginView() {
             size="lg"
             mt={6}
           >
-            Entrar
+            Sign in
           </Button>
         </form>
       </Box>

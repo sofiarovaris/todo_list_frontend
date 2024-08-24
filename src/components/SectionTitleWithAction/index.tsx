@@ -5,14 +5,19 @@ import EditListModal from '../../features/todo/components/EditListModal';
 import { createList } from '../../api/lists';
 import useListFetch from '../../features/todo/hooks/useListFetch';
 import { useToast } from '@chakra-ui/react';
+import useAuth from '../../hooks/useAuth';
 
 export default function SectionTitleWithAction() {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { mutate } = useListFetch();
   const toast = useToast();
+  const { user } = useAuth();
 
   async function handleSave(data: any) {
-    const created = await createList(data);
+    if (!user) {
+      return;
+    }
+    const created = await createList(user.id, data);
     if (created) {
       onClose();
       mutate();

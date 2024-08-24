@@ -1,11 +1,16 @@
 import useSWR from 'swr';
 import { ListProps } from '../../../types/list';
 import api from '../../../api/config';
+import useAuth from '../../../hooks/useAuth';
 
 export default function useListFetch() {
+  const { user } = useAuth();
+
+  console.log('user', user);
+
   const fetcher = async () => {
     try {
-      const response = await api.get('/lists');
+      const response = await api.get(`/lists/${user?.id}`);
 
       const sortedLists = response.data.sort(
         (a: ListProps, b: ListProps) => a.id - b.id

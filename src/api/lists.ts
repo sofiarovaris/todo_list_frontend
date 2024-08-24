@@ -1,9 +1,12 @@
 import { CreateEditListProps } from '../types/list';
 import api from './config';
 
-export async function createList(data: CreateEditListProps): Promise<boolean> {
+export async function createList(
+  userId: number,
+  data: CreateEditListProps
+): Promise<boolean> {
   try {
-    await api.post('/lists/1', data);
+    await api.post(`/lists/${userId}`, data);
     return true;
   } catch (err) {
     console.error('Error creating list:', err);

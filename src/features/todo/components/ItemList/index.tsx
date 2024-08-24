@@ -97,6 +97,14 @@ export default function ListItem({
       setIsEditing(false);
       await updateListItem(item.id, { name: item.name });
       mutate();
+      toast({
+        title: 'Item updated.',
+        description: 'Your item has been updated successfully.',
+        status: 'success',
+        duration: 2000,
+        position: 'top',
+        isClosable: true,
+      });
     }
   }
 
