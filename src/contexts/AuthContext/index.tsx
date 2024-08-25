@@ -26,15 +26,15 @@ export const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
   const toast = useToast();
 
   async function getUserData() {
-    const user = await getUser();
-    if (user) {
+    try {
+      const userData = await getUser();
+      setUser(userData);
       setIsAuthenticated(true);
-      setUser(user);
-      setIsLoading(false);
-    } else {
+    } catch (error) {
       localStorage.removeItem('token');
       setIsAuthenticated(false);
       setUser(null);
+    } finally {
       setIsLoading(false);
     }
   }
@@ -54,28 +54,15 @@ export const AuthContextProvider: React.FC<{ children: ReactNode }> = ({
   async function login(data: { email: string; password: string }) {
     try {
       const response = await signIn(data);
-      if (response) {
-        localStorage.setItem('token', response.accessToken);
-        setIsAuthenticated(true);
-        await getUserData();
-        toast({
-          title: 'Login efetuado com sucesso!',
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-        });
-        navigate('/');
-      } else {
-        localStorage.removeItem('token');
-        setIsAuthenticated(false);
-        setUser(null);
-        toast({
-          title: 'Erro ao efetuar login!',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        });
-      }
+      localStorage.setItem('token', response.accessToken);
+      await getUserData();
+      toast({
+        title: 'Login efetuado com sucesso!',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+      navigate('/');
     } catch (error) {
       localStorage.removeItem('token');
       setIsAuthenticated(false);

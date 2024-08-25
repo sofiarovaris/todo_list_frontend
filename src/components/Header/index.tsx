@@ -4,7 +4,7 @@ import TButton from '../TButton';
 import useAuth from '../../hooks/useAuth';
 
 export default function Header() {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   return (
     <Box bg="#e5e7eb" p={{ base: 2, md: 4 }} h="100%">
       <Flex justify="space-between" h="100%">
@@ -34,7 +34,7 @@ export default function Header() {
             color="#4b5563"
           />
           <Text ml={2} fontSize={{ base: 'sm', md: 'md' }} color="#4b5563">
-            Sofia
+            {user?.name ?? ''}
           </Text>
           <TButton
             ml={4}

@@ -1,22 +1,22 @@
+import api from '../api/config';
 import { LoginProps } from '../types/user';
-import api from './config';
 
 export async function signIn(data: LoginProps) {
   try {
-    const token = await api.post(`/auth/login`, data);
-    return token.data;
+    const response = await api.post(`/auth/login`, data);
+    return response.data;
   } catch (err) {
-    console.error('Error creating list:', err);
-    return null;
+    console.error('Error signing in:', err);
+    throw err;
   }
 }
 
 export async function getUser() {
   try {
-    const user = await api.get(`/users/me`);
-    return user.data;
+    const response = await api.get(`/users/me`);
+    return response.data;
   } catch (err) {
     console.error('Error getting user:', err);
-    return null;
+    throw err;
   }
 }
