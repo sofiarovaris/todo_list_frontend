@@ -6,8 +6,6 @@ import useAuth from '../../../hooks/useAuth';
 export default function useListFetch() {
   const { user } = useAuth();
 
-  console.log('user', user);
-
   const fetcher = async () => {
     try {
       const response = await api.get(`/lists/${user?.id}`);
