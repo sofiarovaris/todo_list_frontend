@@ -41,7 +41,7 @@ export default function ListComponent({ list }: ListComponentProps) {
         name: newItemText,
       });
 
-      if (created) {
+      try {
         mutate();
         setNewItemText('');
         toast({
@@ -52,7 +52,7 @@ export default function ListComponent({ list }: ListComponentProps) {
           position: 'top',
           isClosable: true,
         });
-      } else {
+      } catch (err) {
         toast({
           title: 'Error adding item.',
           description: 'An error occurred while adding your item.',
@@ -68,9 +68,8 @@ export default function ListComponent({ list }: ListComponentProps) {
   }
 
   async function handleDeleteConfirm() {
-    const deleted = await deleteList(list.id);
-
-    if (deleted) {
+    try {
+      await deleteList(list.id);
       deleteModal.onClose();
       mutate();
       toast({
@@ -81,7 +80,7 @@ export default function ListComponent({ list }: ListComponentProps) {
         position: 'top',
         isClosable: true,
       });
-    } else {
+    } catch (err) {
       toast({
         title: 'Error deleting list.',
         description: 'An error occurred while deleting your list.',
@@ -94,8 +93,8 @@ export default function ListComponent({ list }: ListComponentProps) {
   }
 
   async function handleSave(data: any) {
-    const updated = await updateList(list.id, data);
-    if (updated) {
+    try {
+      await updateList(list.id, data);
       editModal.onClose();
       mutate();
       toast({
@@ -106,7 +105,7 @@ export default function ListComponent({ list }: ListComponentProps) {
         position: 'top',
         isClosable: true,
       });
-    } else {
+    } catch (err) {
       toast({
         title: 'Error updating list.',
         description: 'An error occurred while updating your list.',

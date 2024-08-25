@@ -42,7 +42,7 @@ export default function ItemListModal({
         name: newItemText,
       });
 
-      if (created) {
+      try {
         mutate();
         setNewItemText('');
         toast({
@@ -53,7 +53,7 @@ export default function ItemListModal({
           position: 'top',
           isClosable: true,
         });
-      } else {
+      } catch (err) {
         toast({
           title: 'Error adding item.',
           description: 'An error occurred while adding your item.',

@@ -17,8 +17,9 @@ export default function SectionTitleWithAction() {
     if (!user) {
       return;
     }
-    const created = await createList(user.id, data);
-    if (created) {
+
+    try {
+      await createList(user.id, data);
       onClose();
       mutate();
       toast({
@@ -29,7 +30,7 @@ export default function SectionTitleWithAction() {
         position: 'top',
         isClosable: true,
       });
-    } else {
+    } catch (err) {
       toast({
         title: 'Error creating list.',
         description: 'An error occurred while creating your list.',

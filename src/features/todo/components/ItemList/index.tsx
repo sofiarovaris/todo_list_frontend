@@ -39,28 +39,55 @@ export default function ListItem({
 
   async function handleToggle() {
     if (item.is_done) {
-      const unchecked = await markListItemAsUndone(item.id);
-      if (unchecked) {
+      try {
+        await markListItemAsUndone(item.id);
         setItem((prevItem) => ({ ...prevItem, is_done: false }));
         mutate();
+      } catch (err) {
+        toast({
+          title: 'Error updating item.',
+          description: 'An error occurred while updating your item.',
+          status: 'error',
+          duration: 2000,
+          position: 'top',
+          isClosable: true,
+        });
       }
     } else {
-      const checked = await markListItemAsDone(item.id);
-      if (checked) {
+      try {
+        await markListItemAsDone(item.id);
         setItem((prevItem) => ({ ...prevItem, is_done: true }));
         mutate();
+      } catch (err) {
+        toast({
+          title: 'Error updating item.',
+          description: 'An error occurred while updating your item.',
+          status: 'error',
+          duration: 2000,
+          position: 'top',
+          isClosable: true,
+        });
       }
     }
   }
 
   async function handleDelete() {
     const deleted = await deleteListItem(item.id);
-    if (deleted) {
+    try {
       mutate();
       toast({
         title: 'Item deleted.',
         description: 'Your item has been deleted successfully.',
         status: 'success',
+        duration: 2000,
+        position: 'top',
+        isClosable: true,
+      });
+    } catch (err) {
+      toast({
+        title: 'Error deleting item.',
+        description: 'An error occurred while deleting your item.',
+        status: 'error',
         duration: 2000,
         position: 'top',
         isClosable: true,
@@ -78,13 +105,23 @@ export default function ListItem({
 
   async function handleEditBlur() {
     setIsEditing(false);
-    const edited = await updateListItem(item.id, { name: item.name });
-    if (edited) {
+    try {
+      await updateListItem(item.id, { name: item.name });
+
       mutate();
       toast({
         title: 'Item updated.',
         description: 'Your item has been updated successfully.',
         status: 'success',
+        duration: 2000,
+        position: 'top',
+        isClosable: true,
+      });
+    } catch (err) {
+      toast({
+        title: 'Error updating item.',
+        description: 'An error occurred while updating your item.',
+        status: 'error',
         duration: 2000,
         position: 'top',
         isClosable: true,
