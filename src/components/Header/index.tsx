@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Icon, Button } from '@chakra-ui/react';
+import { Box, Flex, Text, Icon } from '@chakra-ui/react';
 import { FaCheckCircle, FaUserAlt, FaSignOutAlt } from 'react-icons/fa';
 import TButton from '../TButton';
 import useAuth from '../../hooks/useAuth';

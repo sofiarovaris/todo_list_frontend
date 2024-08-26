@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { FaTrash, FaEdit } from 'react-icons/fa';
 import { useState } from 'react';
-import { ListItemProps, ListProps } from '../../../../types/list';
+import { ListProps } from '../../../../types/list';
 import ListItem from '../ItemList';
 import AddItem from '../AddItem';
 import ItemListModal from '../ItemListModal';
@@ -37,11 +37,10 @@ export default function ListComponent({ list }: ListComponentProps) {
 
   async function handleAddItem() {
     if (newItemText.trim()) {
-      const created = await createListItem(list.id, {
-        name: newItemText,
-      });
-
       try {
+        await createListItem(list.id, {
+          name: newItemText,
+        });
         mutate();
         setNewItemText('');
         toast({

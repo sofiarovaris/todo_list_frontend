@@ -1,4 +1,4 @@
-import { Button, ButtonProps, Box, Icon, IconProps } from '@chakra-ui/react';
+import { Button, ButtonProps, Box, IconProps } from '@chakra-ui/react';
 import { ReactElement } from 'react';
 
 interface TButtonProps extends ButtonProps {

@@ -21,7 +21,7 @@ interface ListModalProps {
   title: string;
   id: number;
   items: ListItemProps[];
-  color: string; // Adicione a propriedade color
+  color: string;
 }
 
 export default function ItemListModal({
@@ -38,11 +38,10 @@ export default function ItemListModal({
 
   async function handleAddItem() {
     if (newItemText.trim()) {
-      const created = await createListItem(id, {
-        name: newItemText,
-      });
-
       try {
+        await createListItem(id, {
+          name: newItemText,
+        });
         mutate();
         setNewItemText('');
         toast({

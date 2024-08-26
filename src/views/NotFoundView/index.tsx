@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Flex, Heading, Text, Button } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 

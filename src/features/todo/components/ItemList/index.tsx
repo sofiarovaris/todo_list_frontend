@@ -72,8 +72,8 @@ export default function ListItem({
   }
 
   async function handleDelete() {
-    const deleted = await deleteListItem(item.id);
     try {
+      await deleteListItem(item.id);
       mutate();
       toast({
         title: 'Item deleted.',

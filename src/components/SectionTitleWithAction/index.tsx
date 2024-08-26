@@ -1,5 +1,5 @@
 import { Box, Flex, Text, useDisclosure } from '@chakra-ui/react';
-import { MdPlaylistAdd } from 'react-icons/md'; // Importa o ícone
+import { MdPlaylistAdd } from 'react-icons/md';
 import TButton from '../TButton';
 import EditListModal from '../../features/todo/components/EditListModal';
 import { createList } from '../../api/lists';

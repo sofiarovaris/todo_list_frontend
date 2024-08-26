@@ -1,16 +1,6 @@
-import {
-  Box,
-  Flex,
-  Stack,
-  Input,
-  Button,
-  Text,
-  useToast,
-  Icon,
-} from '@chakra-ui/react';
+import { Box, Flex, Stack, Input, Button, Text, Icon } from '@chakra-ui/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { FaCheckCircle } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
 interface LoginFormInputs {
@@ -20,8 +10,7 @@ interface LoginFormInputs {
 
 export default function LoginView() {
   const { login } = useAuth();
-  const toast = useToast();
-  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,

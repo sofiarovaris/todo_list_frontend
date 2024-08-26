@@ -1,4 +1,4 @@
-import { Box, Grid, Stack, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Grid, useBreakpointValue } from '@chakra-ui/react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import SectionTitleWithAction from '../../components/SectionTitleWithAction';
@@ -6,7 +6,7 @@ import ListComponent from '../../features/todo/components/List';
 import useListFetch from '../../features/todo/hooks/useListFetch';
 
 export default function HomeView() {
-  const { lists, mutate } = useListFetch();
+  const { lists } = useListFetch();
 
   const numColumns = useBreakpointValue({ base: 1, md: 2, lg: 3, xl: 4 });
 

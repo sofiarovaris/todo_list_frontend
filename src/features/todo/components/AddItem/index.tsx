@@ -1,5 +1,4 @@
 import { Flex, Input, IconButton } from '@chakra-ui/react';
-import { on } from 'events';
 import { FaPlus } from 'react-icons/fa';
 
 interface AddItemProps {
